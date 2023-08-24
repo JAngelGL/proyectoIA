@@ -27,10 +27,11 @@ def GD(params, samples, y, alfa):
 	Returns:
 		temp(lst) a list with the new values for the parameters after 1 run of the sample set
 	"""
-	temp = list(params)
+	##temp = list(params)
 	error = numpy.dot(params,samples)-y
 	gradiente = numpy.dot(samples.T,error)/len(samples)
-	new_params -= alfa-gradiente
+	new_params -= alfa*gradiente
+	return new_params
 	
 def scaling(samples):
 	"""Normalizes sample values so that gradient descent can converge
@@ -47,18 +48,21 @@ def scaling(samples):
 #  multivariate example trivial
 
 params = numpy.zeros(6)
-columns= ["class","sepal length","sepal width","petal length", "petal width"]
-samples= pandas.read_csv(r"C:\Users\drago\Downloads\iris.data",names = columns)
-y = [1,2,3]
+columns= ["Class","Alcohol","Malic acid","Ash","Alcalinity of ash", "Magnesium","Total phenols","Flavanoids",
+	  "Nonflavanoid phenols","Proanthocyanins","Color intensity","Hue","OD280/OD315 of diluted wines","Proline  "]
+samples = pandas.read_csv(r"C:\Users\drago\Downloads\wine.data",names = columns)
+##print(samples)
 
+y = samples[["Class"]].to_numpy()
 alfa =.03  #  learning rate
 epochs = 0
 
-scaled_sample= scaling(samples)
-
-
+scaled_sample = scaling(samples)
+#print("datos escalados: ",scaled_sample)
 
 __errors__= [];  #global variable to store the errors/loss for visualisation
+
+
 
 
 while True:  #  run gradient descent until local minima is reached
@@ -76,3 +80,9 @@ while True:  #  run gradient descent until local minima is reached
 	plt.ylabel("Mean Squared Error")
 	plt.title("Error Reduction")
 	plt.show()
+
+
+
+
+
+
